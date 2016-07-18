@@ -29,6 +29,15 @@ export default class TodoList {
 
   toggleStatus(task) {
     task.complete = !task.complete;
+      if (task.complete) {
+        task.completedTime = Date.now();
+        console.log(task.completedTime);
+        console.log(task.createTime);
+        task.completionLength = task.completedTime - task.createTime;
+      } else {
+        task.completedTime = '';
+        task.completionLength = '';
+      }
     this.$filter();
   }
 
@@ -87,7 +96,10 @@ class Task {
   constructor(description) {
     this.id = cuid();
     this.description = description;
+    this.createTime = Date.now();
     this.isCompleted = false;
+    this.completedTime = '';
+    this.completionLength = '';
   }
 
   get complete() {
@@ -98,4 +110,3 @@ class Task {
     this.isCompleted = !!val;
   }
 }
-
