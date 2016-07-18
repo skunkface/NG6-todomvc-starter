@@ -1,6 +1,6 @@
 import cuid from 'cuid';
 //import 'core-js/modules/es6.array.find';
-
+import moment from 'moment';
 export default class TodoList {
 
   constructor() {
@@ -30,10 +30,8 @@ export default class TodoList {
   toggleStatus(task) {
     task.complete = !task.complete;
       if (task.complete) {
-        task.completedTime = Date.now();
-        console.log(task.completedTime);
-        console.log(task.createTime);
-        task.completionLength = task.completedTime - task.createTime;
+        task.completedTime = moment().format();
+        task.completionLength = moment(moment(moment().diff(task.createTime))).subtract(1, 'hours').format();
       } else {
         task.completedTime = '';
         task.completionLength = '';
@@ -96,7 +94,7 @@ class Task {
   constructor(description) {
     this.id = cuid();
     this.description = description;
-    this.createTime = Date.now();
+    this.createTime = moment().format();
     this.isCompleted = false;
     this.completedTime = '';
     this.completionLength = '';
