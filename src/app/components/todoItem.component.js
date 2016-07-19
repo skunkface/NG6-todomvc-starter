@@ -69,13 +69,13 @@ export default {
           value="{{vm.task.description}}">
         </todo-text-input>
       </div>
-      <div class="timeCompleted">
-        <p ng-show="vm.task.complete">completed on:</p>
+      <div ng-show="vm.task.complete"  class="timeCompleted">
+        <p>completed on:</p>
         <p class="time">{{vm.task.completedTime | date:'short'}}</p>
       </div>
-      <div class="lengthCompletion">
-        <p ng-show="vm.task.complete">length</p>
-        <p class="time">{{vm.task.completionLength | date: 'hh:mm:ss'}}</p>
+      <div ng-show="vm.task.complete"  class="lengthCompletion">
+        <p>length</p>
+        <p class="time">{{vm.task.completionAsHours}} {{vm.task.completionHours}} {{vm.task.completionAsMinutes}} {{vm.task.completionMinutes}} {{vm.task.completionAsSeconds}} {{vm.task.completionSeconds}}</p>
       </div>
     </li>
   `,

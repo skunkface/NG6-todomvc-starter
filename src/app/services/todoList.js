@@ -31,7 +31,25 @@ export default class TodoList {
     task.complete = !task.complete;
       if (task.complete) {
         task.completedTime = moment().format();
-        task.completionLength = moment(moment(moment().diff(task.createTime))).subtract(1, 'hours').format();
+        task.completionLength = moment.duration(moment().diff(task.createTime));
+        if (task.completionLength.asHours() < 1) {
+          if (task.completionLength.asMinutes() < 1) {
+            task.completionAsSeconds = task.completionLength.seconds();
+            task.completionSeconds = 'seconds';
+          } else {
+            task.completionAsMinutes = task.completionLength.minutes();
+            task.completionMinutes = 'minutes';
+            task.completionAsSeconds = task.completionLength.seconds();
+            task.completionSeconds = 'seconds';
+          }
+        } else {
+          task.completionAsHours = task.completionLength.hours();
+          task.completionHours = 'hours';
+          task.completionAsMinutes = task.completionLength.minutes();
+          task.completionMinutes = 'minutes';
+          task.completionAsSeconds = task.completionLength.seconds();
+          task.completionSeconds = 'seconds';
+        }
       } else {
         task.completedTime = '';
         task.completionLength = '';
