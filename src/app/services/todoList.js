@@ -20,6 +20,7 @@ export default class TodoList {
     const complete = this.countPending() !== 0;
     this.list = this.list.map((task) => {
       task.complete = !!complete;
+      task.readLength();
 
       return task;
     });
@@ -29,31 +30,7 @@ export default class TodoList {
 
   toggleStatus(task) {
     task.complete = !task.complete;
-      if (task.complete) {
-        task.completedTime = moment().format();
-        task.completionLength = moment.duration(moment().diff(task.createTime));
-        if (task.completionLength.asHours() < 1) {
-          if (task.completionLength.asMinutes() < 1) {
-            task.completionAsSeconds = task.completionLength.seconds();
-            task.completionSeconds = 'seconds';
-          } else {
-            task.completionAsMinutes = task.completionLength.minutes();
-            task.completionMinutes = 'minutes';
-            task.completionAsSeconds = task.completionLength.seconds();
-            task.completionSeconds = 'seconds';
-          }
-        } else {
-          task.completionAsHours = task.completionLength.hours();
-          task.completionHours = 'hours';
-          task.completionAsMinutes = task.completionLength.minutes();
-          task.completionMinutes = 'minutes';
-          task.completionAsSeconds = task.completionLength.seconds();
-          task.completionSeconds = 'seconds';
-        }
-      } else {
-        task.completedTime = '';
-        task.completionLength = '';
-      }
+    task.readLength();
     this.$filter();
   }
 
@@ -124,5 +101,28 @@ class Task {
 
   set complete(val) {
     this.isCompleted = !!val;
+  }
+
+  readLength() {
+    this.completedTime = moment().format();
+    this.completionLength = moment.duration(moment().diff(this.createTime));
+    if (this.completionLength.asHours() < 1) {
+      if (this.completionLength.asMinutes() < 1) {
+        this.completionAsSeconds = this.completionLength.seconds();
+        this.completionSeconds = 'seconds';
+      } else {
+        this.completionAsMinutes = this.completionLength.minutes();
+        this.completionMinutes = 'minutes';
+        this.completionAsSeconds = this.completionLength.seconds();
+        this.completionSeconds = 'seconds';
+      }
+    } else {
+      this.completionAsHours = thiscompletionLength.hours();
+      this.completionHours = 'hours';
+      this.completionAsMinutes = this.completionLength.minutes();
+      this.completionMinutes = 'minutes';
+      this.completionAsSeconds = this.completionLength.seconds();
+      this.completionSeconds = 'seconds';
+    }
   }
 }
