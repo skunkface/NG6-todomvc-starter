@@ -1,6 +1,6 @@
 import cuid from 'cuid';
 //import 'core-js/modules/es6.array.find';
-
+import moment from 'moment';
 export default class TodoList {
 
   constructor() {
@@ -20,6 +20,7 @@ export default class TodoList {
     const complete = this.countPending() !== 0;
     this.list = this.list.map((task) => {
       task.complete = !!complete;
+      task.readLength();
 
       return task;
     });
@@ -29,6 +30,7 @@ export default class TodoList {
 
   toggleStatus(task) {
     task.complete = !task.complete;
+    task.readLength();
     this.$filter();
   }
 
@@ -87,7 +89,10 @@ class Task {
   constructor(description) {
     this.id = cuid();
     this.description = description;
+    this.createTime = moment().format();
     this.isCompleted = false;
+    this.completedTime = '';
+    this.completionLength = '';
   }
 
   get complete() {
@@ -97,5 +102,27 @@ class Task {
   set complete(val) {
     this.isCompleted = !!val;
   }
-}
 
+  readLength() {
+    this.completedTime = moment().format();
+    this.completionLength = moment.duration(moment().diff(this.createTime));
+    if (this.completionLength.asHours() < 1) {
+      if (this.completionLength.asMinutes() < 1) {
+        this.completionAsSeconds = this.completionLength.seconds();
+        this.completionSeconds = 'seconds';
+      } else {
+        this.completionAsMinutes = this.completionLength.minutes();
+        this.completionMinutes = 'minutes';
+        this.completionAsSeconds = this.completionLength.seconds();
+        this.completionSeconds = 'seconds';
+      }
+    } else {
+      this.completionAsHours = this.completionLength.hours();
+      this.completionHours = 'hours';
+      this.completionAsMinutes = this.completionLength.minutes();
+      this.completionMinutes = 'minutes';
+      this.completionAsSeconds = this.completionLength.seconds();
+      this.completionSeconds = 'seconds';
+    }
+  }
+}

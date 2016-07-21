@@ -48,6 +48,9 @@ export default {
   },
   template: `
     <li ng-class="{'completed': vm.task.complete, 'editing': vm.isEditing}">
+      <div class="timeCreated">
+        <p>{{vm.task.createTime | date:'short'}}</p>
+      </div>
       <div class="view" ng-show="!vm.isEditing">
         <input
           class="toggle"
@@ -65,6 +68,14 @@ export default {
           on-save="vm.onSave(task)"
           value="{{vm.task.description}}">
         </todo-text-input>
+      </div>
+      <div ng-show="vm.task.complete"  class="timeCompleted">
+        <p>completed on:</p>
+        <p class="time">{{vm.task.completedTime | date:'short'}}</p>
+      </div>
+      <div ng-show="vm.task.complete"  class="lengthCompletion">
+        <p>length</p>
+        <p class="time">{{vm.task.completionAsHours}} {{vm.task.completionHours}} {{vm.task.completionAsMinutes}} {{vm.task.completionMinutes}} {{vm.task.completionAsSeconds}} {{vm.task.completionSeconds}}</p>
       </div>
     </li>
   `,
