@@ -117,7 +117,7 @@ class Task {
         this.completionSeconds = 'seconds';
       }
     } else {
-      this.completionAsHours = thiscompletionLength.hours();
+      this.completionAsHours = this.completionLength.hours();
       this.completionHours = 'hours';
       this.completionAsMinutes = this.completionLength.minutes();
       this.completionMinutes = 'minutes';
