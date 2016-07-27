@@ -146,6 +146,9 @@ class Task {
       }
     } else {
       this.completedTime = '';
+      this.completionAsHours = '';
+      this.completionAsMinutes = '';
+      this.completionAsSeconds = '';
     }
   }
 }
