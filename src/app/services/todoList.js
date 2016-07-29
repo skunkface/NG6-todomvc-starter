@@ -99,9 +99,9 @@ class Task {
     this.description = description;
     this.createTime = moment().format();
     this.startTime = '';
+    this.completedTime = '';
     this.isStarted = false;
     this.isCompleted = false;
-    this.completedTime = '';
     this.completionLength = '';
   }
 
@@ -110,6 +110,9 @@ class Task {
   }
 
   set complete(val) {
+    if (this.isCompleted) {
+      this.completedTime = '';
+    } else this.completedTime = moment().format();
     this.isCompleted = !!val;
   }
 
@@ -124,7 +127,6 @@ class Task {
 
   readLength() {
     if (this.isCompleted) {
-      this.completedTime = moment().format();
       this.completionLength = moment.duration(moment().diff(this.start));
       if (this.completionLength.asHours() < 1) {
         if (this.completionLength.asMinutes() < 1) {
@@ -146,6 +148,7 @@ class Task {
       }
     } else {
       this.completedTime = '';
+      this.completionLength = '';
       this.completionAsHours = '';
       this.completionAsMinutes = '';
       this.completionAsSeconds = '';
