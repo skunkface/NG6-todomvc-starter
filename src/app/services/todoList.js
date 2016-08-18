@@ -34,6 +34,14 @@ export default class TodoList {
     this.$filter();
   }
 
+  setStart(task) {
+    if (!task.isStarted) {
+      task.start = moment().format();
+    } else {
+      task.start = '';
+    }
+  }
+
   remove(item) {
     this.list = this.list.filter((todo) => todo !== item);
     this.$filter();
@@ -90,8 +98,10 @@ class Task {
     this.id = cuid();
     this.description = description;
     this.createTime = moment().format();
-    this.isCompleted = false;
+    this.startTime = '';
     this.completedTime = '';
+    this.isStarted = false;
+    this.isCompleted = false;
     this.completionLength = '';
   }
 
@@ -100,29 +110,48 @@ class Task {
   }
 
   set complete(val) {
+    if (this.isCompleted) {
+      this.completedTime = '';
+    } else this.completedTime = moment().format();
     this.isCompleted = !!val;
   }
 
+  get start() {
+    return this.startTime;
+  }
+
+  set start(time) {
+    this.startTime = time;
+    this.isStarted = !this.isStarted;
+  }
+
   readLength() {
-    this.completedTime = moment().format();
-    this.completionLength = moment.duration(moment().diff(this.createTime));
-    if (this.completionLength.asHours() < 1) {
-      if (this.completionLength.asMinutes() < 1) {
-        this.completionAsSeconds = this.completionLength.seconds();
-        this.completionSeconds = 'seconds';
+    if (this.isCompleted) {
+      this.completionLength = moment.duration(moment().diff(this.start));
+      if (this.completionLength.asHours() < 1) {
+        if (this.completionLength.asMinutes() < 1) {
+          this.completionAsSeconds = this.completionLength.seconds();
+          this.completionSeconds = 'seconds';
+        } else {
+          this.completionAsMinutes = this.completionLength.minutes();
+          this.completionMinutes = 'minutes';
+          this.completionAsSeconds = this.completionLength.seconds();
+          this.completionSeconds = 'seconds';
+        }
       } else {
+        this.completionAsHours = this.completionLength.hours();
+        this.completionHours = 'hours';
         this.completionAsMinutes = this.completionLength.minutes();
         this.completionMinutes = 'minutes';
         this.completionAsSeconds = this.completionLength.seconds();
         this.completionSeconds = 'seconds';
       }
     } else {
-      this.completionAsHours = this.completionLength.hours();
-      this.completionHours = 'hours';
-      this.completionAsMinutes = this.completionLength.minutes();
-      this.completionMinutes = 'minutes';
-      this.completionAsSeconds = this.completionLength.seconds();
-      this.completionSeconds = 'seconds';
+      this.completedTime = '';
+      this.completionLength = '';
+      this.completionAsHours = '';
+      this.completionAsMinutes = '';
+      this.completionAsSeconds = '';
     }
   }
 }
